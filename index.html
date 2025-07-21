@@ -1,0 +1,586 @@
+        .email-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        input[type="email"], input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="email"]:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Are You a Day Trader in the Making?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .trading-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .candlestick {
+            position: absolute;
+            width: 8px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .candlestick.green {
+            background: linear-gradient(to bottom, #00ff88 0%, #00cc66 100%);
+        }
+
+        .candlestick.red {
+            background: linear-gradient(to bottom, #ff4444 0%, #cc0000 100%);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .quiz-title {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #00ff88, #ffaa00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .quiz-description {
+            font-size: 1.2em;
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .email-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #00ff88;
+        }
+
+        input[type="email"], input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="email"]:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .question-number {
+            color: #00ff88;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .option {
+            display: block;
+            margin-bottom: 15px;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .option:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #00ff88;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .option input[type="radio"] {
+            display: none;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #00ff88, #00cc66);
+            color: #000;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #ffaa00);
+            transition: width 0.5s ease;
+            border-radius: 3px;
+        }
+
+        .results-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        .result-title {
+            font-size: 2.2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00ff88, #ffaa00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .result-description {
+            font-size: 1.2em;
+            line-height: 1.6;
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+
+        .chart-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #00ff88;
+        }
+
+        .laptop-icon {
+            position: absolute;
+            font-size: 2em;
+            color: rgba(255, 255, 255, 0.3);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .cta-section {
+            background: linear-gradient(45deg, #ff4444, #ffaa00);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .cta-text {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .quiz-title {
+                font-size: 2em;
+            }
+
+            .quiz-description {
+                font-size: 1.1em;
+            }
+
+            .question-text {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="trading-bg" id="tradingBg"></div>
+    
+    <div class="container">
+        <div class="quiz-header">
+            <h1 class="quiz-title">📈 Are You a Day Trader in the Making?</h1>
+            <p class="quiz-description">Find out how ready you are to start earning extra cash with Day Trading 101. Answer these 7 quick questions to see where you stand—and get a free invite to our next live training session!</p>
+        </div>
+
+
+
+        <!-- Quiz Section -->
+        <div class="section active" id="quizSection">
+            <div class="progress-bar">
+                <div class="progress" id="progressBar"></div>
+            </div>
+            
+            <div id="questionContainer">
+                <!-- Questions will be inserted here -->
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>Next Question →</button>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="section" id="resultsSection">
+            <div class="results-section">
+                <div class="chart-icon">🎯</div>
+                <h2 class="result-title" id="resultTitle"></h2>
+                <p class="result-description" id="resultDescription"></p>
+                
+                <div class="cta-section">
+                    <p class="cta-text">🎉 Congratulations! You're invited to our next LIVE training session!</p>
+                    <p style="color: #000; margin-top: 10px;">Check your email for exclusive access details and bonus materials.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating trading elements
+        function createTradingBackground() {
+            const bg = document.getElementById('tradingBg');
+            
+            // Add candlesticks
+            for (let i = 0; i < 20; i++) {
+                const candlestick = document.createElement('div');
+                candlestick.className = `candlestick ${Math.random() > 0.5 ? 'green' : 'red'}`;
+                candlestick.style.left = Math.random() * 100 + '%';
+                candlestick.style.top = Math.random() * 100 + '%';
+                candlestick.style.height = (Math.random() * 30 + 20) + 'px';
+                candlestick.style.animationDelay = Math.random() * 6 + 's';
+                bg.appendChild(candlestick);
+            }
+
+            // Add laptop icons
+            const laptopPositions = [
+                {left: '10%', top: '20%'},
+                {left: '80%', top: '60%'},
+                {left: '20%', top: '80%'},
+                {left: '90%', top: '30%'}
+            ];
+
+            laptopPositions.forEach((pos, index) => {
+                const laptop = document.createElement('div');
+                laptop.className = 'laptop-icon';
+                laptop.innerHTML = '💻';
+                laptop.style.left = pos.left;
+                laptop.style.top = pos.top;
+                laptop.style.animationDelay = index * 1 + 's';
+                bg.appendChild(laptop);
+            });
+        }
+
+        // Quiz questions
+        const questions = [
+            {
+                number: 1,
+                text: "What's your main goal for day trading?",
+                options: [
+                    { text: "Pay off debt faster", value: "A" },
+                    { text: "Build a reliable side income", value: "B" },
+                    { text: "Replace my full-time income", value: "C" },
+                    { text: "Just curious—want to learn", value: "D" }
+                ]
+            },
+            {
+                number: 2,
+                text: "How would you rate your current trading knowledge?",
+                options: [
+                    { text: "I'm brand new", value: "A" },
+                    { text: "I know the basics (charts, indicators)", value: "B" },
+                    { text: "I've made a few successful trades", value: "C" },
+                    { text: "I trade regularly but want to improve", value: "D" }
+                ]
+            },
+            {
+                number: 3,
+                text: "What's your risk tolerance?",
+                options: [
+                    { text: "Very low—I can't afford big losses", value: "A" },
+                    { text: "Moderate—I'm okay with small dips", value: "B" },
+                    { text: "High—I know losses come with gains", value: "C" },
+                    { text: "Unsure—I need guidance", value: "D" }
+                ]
+            },
+            {
+                number: 4,
+                text: "How much time can you commit to live training each week?",
+                options: [
+                    { text: "Under 2 hours", value: "A" },
+                    { text: "2–5 hours", value: "B" },
+                    { text: "5–10 hours", value: "C" },
+                    { text: "10+ hours", value: "D" }
+                ]
+            },
+            {
+                number: 5,
+                text: "Which best describes your tech setup?",
+                options: [
+                    { text: "Smartphone only", value: "A" },
+                    { text: "Laptop or desktop with one monitor", value: "B" },
+                    { text: "Multi-monitor setup", value: "C" },
+                    { text: "Not sure what I need", value: "D" }
+                ]
+            },
+            {
+                number: 6,
+                text: "How do you handle pressure when a trade goes against you?",
+                options: [
+                    { text: "I panic and close out", value: "A" },
+                    { text: "I hold but worry a lot", value: "B" },
+                    { text: "I stick to my plan", value: "C" },
+                    { text: "I'd like tips on staying calm", value: "D" }
+                ]
+            },
+            {
+                number: 7,
+                text: "What's your preferred learning style?",
+                options: [
+                    { text: "Short videos I can watch anytime", value: "A" },
+                    { text: "Live, interactive sessions", value: "B" },
+                    { text: "Written guides and checklists", value: "C" },
+                    { text: "A mix of all three", value: "D" }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = [];
+
+        // Results mapping
+        const results = {
+            'A': {
+                title: "Trading Newbie 🌱",
+                description: "You're just starting out. We'll walk you through every step in our live training so you can build confidence fast."
+            },
+            'B': {
+                title: "Rising Trader 📈",
+                description: "You've got a handle on basics. Our live sessions will sharpen your skills and boost your earnings."
+            },
+            'C': {
+                title: "Seasoned Trader 💪",
+                description: "You know the ropes—but our expert feedback and advanced strategies will help you level up."
+            },
+            'D': {
+                title: "Curious Learner 🤔",
+                description: "You're eager to learn the ropes. Our mixed-format training is perfect for discovering what works best for you."
+            }
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            createTradingBackground();
+            loadQuestion();
+        });
+
+        function startQuiz() {
+            document.getElementById('quizSection').classList.add('active');
+            updateProgress();
+        }
+
+        function loadQuestion() {
+            const question = questions[currentQuestion];
+            const container = document.getElementById('questionContainer');
+            
+            container.innerHTML = `
+                <div class="question-card">
+                    <div class="question-number">Question ${question.number} of ${questions.length}</div>
+                    <div class="question-text">${question.text}</div>
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <label class="option" for="q${currentQuestion}_${index}">
+                                <input type="radio" id="q${currentQuestion}_${index}" name="q${currentQuestion}" value="${option.value}" onchange="selectAnswer('${option.value}')">
+                                ${option.text}
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectAnswer(value) {
+            answers[currentQuestion] = value;
+            document.getElementById('nextBtn').disabled = false;
+            
+            // Visual feedback
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.closest('.option').classList.add('selected');
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+                updateProgress();
+                document.getElementById('nextBtn').disabled = true;
+            } else {
+                showResults();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function showResults() {
+            // Count answers
+            const counts = { A: 0, B: 0, C: 0, D: 0 };
+            answers.forEach(answer => {
+                counts[answer]++;
+            });
+
+            // Find the most frequent answer
+            const mostFrequent = Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);
+            const result = results[mostFrequent];
+
+            document.getElementById('quizSection').classList.remove('active');
+            document.getElementById('resultsSection').classList.add('active');
+            
+            document.getElementById('resultTitle').textContent = result.title;
+            document.getElementById('resultDescription').textContent = result.description;
+
+            // Log quiz results
+            console.log('Quiz Results:', mostFrequent);
+            console.log('Answer Distribution:', counts);
+        }
+    </script>
+</body>
+</html>
