@@ -1,31 +1,4 @@
-        .email-section {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        input[type="email"], input[type="text"] {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        input[type="email"]:focus, input[type="text"]:focus {
-            outline: none;
-            border-color: #00ff88;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-        }<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -338,10 +311,27 @@
             <p class="quiz-description">Find out how ready you are to start earning extra cash with Day Trading 101. Answer these 7 quick questions to see where you stand—and get a free invite to our next live training session!</p>
         </div>
 
-
+        <!-- Email Collection Section -->
+        <div class="section active" id="emailSection">
+            <div class="email-section">
+                <div class="chart-icon">💻📊</div>
+                <h2 style="margin-bottom: 20px; text-align: center;">Get Your Results + Free Training Invite!</h2>
+                <form id="emailForm">
+                    <div class="form-group">
+                        <label for="firstName">First Name:</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Start Quiz & Get My Results 🚀</button>
+                </form>
+            </div>
+        </div>
 
         <!-- Quiz Section -->
-        <div class="section active" id="quizSection">
+        <div class="section" id="quizSection">
             <div class="progress-bar">
                 <div class="progress" id="progressBar"></div>
             </div>
@@ -363,8 +353,8 @@
                 <p class="result-description" id="resultDescription"></p>
                 
                 <div class="cta-section">
-                    <p class="cta-text">🎉 Congratulations! You're invited to our next LIVE training session!</p>
-                    <p style="color: #000; margin-top: 10px;">Check your email for exclusive access details and bonus materials.</p>
+                    <p class="cta-text">🎉 Congratulations <span id="resultName"></span>! You're invited to our next LIVE training session!</p>
+                    <p style="color: #000; margin-top: 10px;">Check your email (<span id="resultEmail"></span>) for exclusive access details and bonus materials.</p>
                 </div>
             </div>
         </div>
@@ -481,6 +471,8 @@
 
         let currentQuestion = 0;
         let answers = [];
+        let userEmail = '';
+        let userName = '';
 
         // Results mapping
         const results = {
@@ -505,10 +497,20 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             createTradingBackground();
+            
+            document.getElementById('emailForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                startQuiz();
+            });
+
             loadQuestion();
         });
 
         function startQuiz() {
+            userEmail = document.getElementById('email').value;
+            userName = document.getElementById('firstName').value;
+            
+            document.getElementById('emailSection').classList.remove('active');
             document.getElementById('quizSection').classList.add('active');
             updateProgress();
         }
@@ -576,8 +578,12 @@
             
             document.getElementById('resultTitle').textContent = result.title;
             document.getElementById('resultDescription').textContent = result.description;
+            document.getElementById('resultName').textContent = userName;
+            document.getElementById('resultEmail').textContent = userEmail;
 
-            // Log quiz results
+            // Here you would typically send the email and results to your server
+            console.log('User Email:', userEmail);
+            console.log('User Name:', userName);
             console.log('Quiz Results:', mostFrequent);
             console.log('Answer Distribution:', counts);
         }
